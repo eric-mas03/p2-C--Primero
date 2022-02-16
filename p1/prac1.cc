@@ -112,8 +112,6 @@ Hero createHero(Heroe & player) {
 }
 
 Enemy createEnemy(Enemy & enemigo, int genera) { //No funciona decir el nombre del enemigo <-------------------
-  char breed[100];
-  
 	enemigo.features.attack = 0;
 	enemigo.features.defense = 0;
 	enemigo.features.hp = 0;
@@ -122,35 +120,62 @@ Enemy createEnemy(Enemy & enemigo, int genera) { //No funciona decir el nombre d
     enemigo.features.attack = 40;
     enemigo.features.defense = 40;
     enemigo.features.hp = enemigo.features.defense * 2;
-    strcpy(breed, "AXOLOTL");
+    enemigo.name = AXOLOTL;
   }
   if (genera >= 7 && genera <= 11) { //Troll
     enemigo.features.attack = 60;
     enemigo.features.defense = 80;
     enemigo.features.hp = enemigo.features.defense * 2;
-    strcpy(breed, "TROLL");
+    enemigo.name = TROLL;
   }
   if (genera >= 12 && genera <= 15) { //Orc
     enemigo.features.attack = 80;
     enemigo.features.defense = 120;
     enemigo.features.hp = enemigo.features.defense * 2;
-    strcpy(breed, "ORC");
-  }
+	enemigo.name = ORC;  
+	}
   if (genera >= 16 && genera <= 18) { //Hell Hound
     enemigo.features.attack = 120;
     enemigo.features.defense = 100;
     enemigo.features.hp = enemigo.features.defense * 2;
-    strcpy(breed, "HELLHOUND");
+    enemigo.name = HELLHOUND;
   }
   if (genera >= 19 && genera <= 20) { //Dragon
     enemigo.features.attack = 160;
     enemigo.features.defense = 140;
     enemigo.features.hp = enemigo.features.defense * 2;
-    strcpy(breed, "DRAGON");
+	enemigo.name = DRAGON;
   }
 
   cout << "[Enemy]" << endl;
-  cout << "Breed: " << breed << endl;
+  cout << "Breed: ";
+	switch(enemigo.name){
+			case 0:
+				cout << "AXOLOTL"<<endl;
+				break;
+			
+			case 1:
+				cout << "TROLL"<<endl;
+				break;
+			
+			case 2:
+				cout << "ORC"<<endl;
+				break;
+			
+			case 3:
+				cout << "HELLHOUND"<<endl;
+				break;
+			
+			case 4:
+				cout << "DRAGON"<<endl;
+				break;
+			
+			default:
+			break;
+
+		}
+		
+
   cout << "Attack: " << enemigo.features.attack << endl;
   cout << "Defense: " << enemigo.features.defense << endl;
   cout << "Healt points: " << enemigo.features.hp << endl << endl;
