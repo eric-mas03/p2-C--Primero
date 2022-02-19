@@ -53,49 +53,54 @@ int rollDice() {
 typedef Hero Heroe;
 typedef Enemy Enemigo;
 
-Hero createHero(Heroe & player) {
+Hero createHero(Heroe &player, int & longitud);
+Enemy createEnemy(Enemy & enemigo, int genera);
+void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &longitud);
+void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida);
+void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud);
+void report(const Hero & hero, int longitud);
+
+Hero createHero(Heroe &player, int & longitud) {
  
-  int i, error, longitud, ataque, defensa;
+  int i, error, ataque, defensa;
   char barra;
-  
-  //Verificar nombre de Héroe ---> Comprobado
+ 
   do {
     error = 0;
-    cout << "Enter hero name : " << endl;
+    cout << "Enter hero name: ";
     cin.getline(player.name, KNAME - 1);
 	longitud = strlen(player.name);
 	
     for (i = 0; i < longitud; i++) {
       if (error == 0) {
 
-        if (isalnum(player.name[i]) == 0) {
+         if (isdigit(player.name[0]) == 1) {
           error = 1;
-        }
-      }
-    }
+         } 
+         if (isalnum(player.name[i]) == 0) {
+          error = 1;
+		 }
+       }
+     }
 
     if (error == 1) {
-      cout << "ERROR: wrong name" << endl << endl;
+      cout << "ERROR: wrong name" << endl;
     }
 
   } while (error == 1);
 
-  
-
   do{
-	error = 0;
-	cout << "Enter attack/defense:" << endl;
-	cin>>ataque>>barra>>defensa;
-	cout << endl;
-	
-	if(barra != '/'){
-		error = 1;
-	}
-	
-	if(error == 1|| (ataque+defensa != 100)){
-		cout <<"ERROR: wrong distribution"<<endl<<endl;
-	}
-	
+		error = 0;
+		cout << "Enter attack/defense: ";
+		cin>>ataque>>barra>>defensa;
+		
+		if(barra != '/'){
+			error = 1;
+		}
+		
+		if(error == 1|| (ataque+defensa != 100) || ataque == 0 || defensa == 0){
+			cout <<"ERROR: wrong distribution"<<endl<<endl;
+		}
 	}while((error == 1) || (ataque+defensa != 100) || (ataque == 0 || defensa == 0));
 
 		player.features.attack = KPOINTS*ataque/100;
@@ -108,14 +113,12 @@ Hero createHero(Heroe & player) {
   		for(i = 0; i<KENEMIES; i++){
   			player.kills[i] = 0;
   		}
-  	
+  		
+  	return player;
 }
 
-Enemy createEnemy(Enemy & enemigo, int genera) { //No funciona decir el nombre del enemigo <-------------------
-	enemigo.features.attack = 0;
-	enemigo.features.defense = 0;
-	enemigo.features.hp = 0;
-	
+Enemy createEnemy(Enemy & enemigo, int genera) { 
+
   if (genera <= 6 && genera <= 6) { //Ajolote
     enemigo.features.attack = 40;
     enemigo.features.defense = 40;
@@ -151,50 +154,48 @@ Enemy createEnemy(Enemy & enemigo, int genera) { //No funciona decir el nombre d
   cout << "Breed: ";
 	switch(enemigo.name){
 			case 0:
-				cout << "AXOLOTL"<<endl;
+				cout << "Axolotl"<<endl;
 				break;
 			
 			case 1:
-				cout << "TROLL"<<endl;
+				cout << "Troll"<<endl;
 				break;
 			
 			case 2:
-				cout << "ORC"<<endl;
+				cout << "Orc"<<endl;
 				break;
 			
 			case 3:
-				cout << "HELLHOUND"<<endl;
+				cout << "Hellhound"<<endl;
 				break;
 			
 			case 4:
-				cout << "DRAGON"<<endl;
+				cout << "Dragon"<<endl;
 				break;
 			
 			default:
 			break;
 
 		}
-		
 
   cout << "Attack: " << enemigo.features.attack << endl;
   cout << "Defense: " << enemigo.features.defense << endl;
-  cout << "Healt points: " << enemigo.features.hp << endl << endl;
+  cout << "Healt points: " << enemigo.features.hp <<endl;
   
+  return enemigo;
 }
 
-void fight(Hero & hero, Enemy & enemy, int super, int genera) {
-	int dado, damage, newattack, newdefense, hp;
-	hp = enemy.features.hp;
-	newattack = 0;
-	newdefense = 0;
-	
-	cout << "[Hero -> Enemy]"<<endl;		
+void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida){
+		int dado, damage, newattack, newdefense, hp;
+		huida = 0;
+		hp = enemy.features.hp;
+		cout << "[Hero -> Enemy]"<<endl;		
 	
 		dado = rollDice()*5;
 		if(super == 1 && hero.special == true){
 			hero.special = false;
 			newattack = hero.features.attack + dado*3;
-			cout << "Attack : " << hero.features.attack << " + " << dado*3<<endl;
+			cout << "Attack : " << hero.features.attack << " + " << dado*3<<endl;	
 		}
 		
 		else {
@@ -202,18 +203,14 @@ void fight(Hero & hero, Enemy & enemy, int super, int genera) {
 			cout << "Attack : " << hero.features.attack << " + " << dado<<endl;
 		}
 
-
 	dado = rollDice()*5;
 	newdefense = enemy.features.defense + dado;
-		
 	cout << "Defense : " << enemy.features.defense << " + " << dado<<endl;
-		
 	damage = newattack - newdefense;
 		
 	if(newattack < newdefense){
 		damage = 0;		
-	}
-		
+	}	
 	cout << "Hit points : " << damage << endl;
 	if(newattack >= newdefense){
 		hp = enemy.features.hp - damage;
@@ -225,33 +222,11 @@ void fight(Hero & hero, Enemy & enemy, int super, int genera) {
 	if(enemy.features.hp < 0){
 		enemy.features.hp = 0;
 	}
-	
-	cout << "Enemy healt points : " << enemy.features.hp << endl << endl;
-	
-	if(enemy.features.hp <= 0){
-		cout << "Enemy killed"<<endl<<endl;
-		if (genera <= 6 && genera <= 6) { //Ajolote
-			hero.kills[0]++;
-			hero.exp = hero.exp+100;
-		}
-		if (genera >= 7 && genera <= 11) { //Troll
-			hero.kills[1]++;
-			hero.exp = hero.exp+150;
-		}	
-		if (genera >= 12 && genera <= 15) { //Orc
-			hero.kills[2]++;
-			hero.exp = hero.exp+200;
-		}
-		if (genera >= 16 && genera <= 18) { //Hell Hound
-			hero.kills[3]++;
-			hero.exp = hero.exp+300;
-		}
-		if (genera >= 19 && genera <= 20) { //Dragon
-			hero.kills[4]++;
-			hero.exp = hero.exp+400;
-		}
-	}
-	else{
+	cout << "Enemy healt points : " << enemy.features.hp << endl;
+}	
+
+void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud){
+		int dado, damage, newattack, newdefense, hp;
 		hp = hero.features.hp;
 		
 		cout << "[Enemy -> Hero]"<<endl;		
@@ -283,19 +258,53 @@ void fight(Hero & hero, Enemy & enemy, int super, int genera) {
 		if(newattack < newdefense){
 			hero.features.hp = hp;
 		}
-		if(hero.features.hp < 0){
+		if(hero.features.hp <= 0){
 			hero.features.hp = 0;
 		}
 		
-		cout << "Hero healt points : " << hero.features.hp << endl << endl;
+		cout << "Hero healt points : " << hero.features.hp<<"\n";
 	
 		if(hero.features.hp <= 0){
 			cout << "You are dead" <<endl;
+			report(hero, longitud);
 		}
+	}
+
+
+void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &longitud) {
+	
+	
+	ataqueheroe(hero, enemy, super, genera, huida);
+	
+	if(enemy.features.hp <= 0){
+		cout << "Enemy killed"<<endl;
+		if (genera <= 6 && genera <= 6) { //Ajolote
+			hero.kills[0]++;
+			hero.exp = hero.exp+100;
+		}
+		if (genera >= 7 && genera <= 11) { //Troll
+			hero.kills[1]++;
+			hero.exp = hero.exp+150;
+		}	
+		if (genera >= 12 && genera <= 15) { //Orc
+			hero.kills[2]++;
+			hero.exp = hero.exp+200;
+		}
+		if (genera >= 16 && genera <= 18) { //Hell Hound
+			hero.kills[3]++;
+			hero.exp = hero.exp+300;
+		}
+		if (genera >= 19 && genera <= 20) { //Dragon
+			hero.kills[4]++;
+			hero.exp = hero.exp+400;
+		}
+	}
+	else{
+		ataquenemy(hero, enemy, super, genera, huida, longitud);
 	}
 }
 
-void report(const Hero & hero) {
+void report(const Hero & hero, int longitud) {
 	
 	int i, total_kills;
 	
@@ -304,7 +313,7 @@ void report(const Hero & hero) {
 	cout << "[Report]"<<endl
 	<<"Name: ";
 	
-	for(i = 0; i<KNAME; i++){
+	for(i = 0; i<longitud; i++){
 		cout << hero.name[i];
 	}
 	
@@ -335,7 +344,7 @@ void report(const Hero & hero) {
 		total_kills = total_kills + hero.kills[i];
 	}
 	
-	cout << total_kills<<endl<<endl;
+	cout << total_kills<<endl;
 }
 
 void showMenu() { 
@@ -353,7 +362,7 @@ int main(int argc, char * argv[]) {
 
 	Heroe player;
 	Enemigo enemigo;
-	int genera, error, super;
+	int genera, error, super, huida, longitud;
 	char opcion;
 	
 	
@@ -367,8 +376,9 @@ int main(int argc, char * argv[]) {
 	}
 
 
-	createHero(player);
+	createHero(player, longitud);
 	super = 0;
+	huida = 0;
 	genera = rollDice();
 	createEnemy(enemigo, genera);
 	
@@ -378,24 +388,21 @@ int main(int argc, char * argv[]) {
 			if(player.features.hp > 0){
 				showMenu();   
 				cin >> opcion;
-				cout << endl;
 				error = 0;
 							
 				switch (opcion) {
-		   
 					case '1':
-						fight(player, enemigo, super, genera);
+						fight(player, enemigo, super, genera, huida, longitud);
 						break;
 
 					case '2':
-						if(player.runaways > 0){
+						if(player.runaways > 0 && huida == 0){
 							
 							player.runaways--;
 							cout << "You run away" << endl;
 							genera = rollDice();
 							createEnemy(enemigo, genera);
-							
-						
+							huida = 1;	
 						}
 						
 						else{
@@ -407,6 +414,7 @@ int main(int argc, char * argv[]) {
 					case '3':
 						if(player.special == true && super == 0){
 							super++;
+							fight(player, enemigo, super, genera, huida, longitud);
 						}
 						else{
 							cout << "ERROR: special not available" << endl;
@@ -415,7 +423,7 @@ int main(int argc, char * argv[]) {
 						break;
 					
 					case '4':
-						report(player);
+						report(player, longitud);
 						break;
 					
 					case 'q':
