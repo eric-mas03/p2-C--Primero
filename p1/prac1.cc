@@ -58,13 +58,13 @@ void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida)
 void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud);
 void report(const Hero & hero, int longitud);
 
-Hero createHero(Heroe &player, int & longitud) {		//Módulo de creación del personaje
+Hero createHero(Heroe &player, int & longitud) {						//Módulo de creación del personaje
   int i, error, ataque, defensa;
   char barra;
   
-    do {
-    error = 0;
-    cout << "Enter hero name: ";
+	do {
+	error = 0;
+	cout << "Enter hero name: ";
     //Insertamos el nombre que ocupará KNAME -1 ya que la última posición esta reservada para caracter nulo
     cin.getline(player.name, KNAME - 1);	
 	longitud = strlen(player.name);
@@ -85,10 +85,10 @@ Hero createHero(Heroe &player, int & longitud) {		//Módulo de creación del per
       //Si se ha incumplido alguna condición mostraremos el mensaje y pediremos el nombre de nuevo
       cout << "ERROR: wrong name" << endl;	
     }
-   }while (error == 1);
+	}while (error == 1);
   
-  //Leemos los parametros de ataque y defensa y en caso de ser no validos volveremos a pedirlos mostrando un error
-  do{										
+	//Leemos los parametros de ataque y defensa y en caso de ser no validos volveremos a pedirlos mostrando un error
+	do{										
 		error = 0;							
 		cout << "Enter attack/defense: ";
 		cin>>ataque>>barra>>defensa;
@@ -117,38 +117,38 @@ Hero createHero(Heroe &player, int & longitud) {		//Módulo de creación del per
   	return player;
 }
 
-Enemy createEnemy(Enemy & enemigo, int genera) {		//Módulo de creación del enemigo
+Enemy createEnemy(Enemy & enemigo, int genera) {						//Módulo de creación del enemigo
 
-  //En función del valor obtenido por el dado en el dado generaremos el enemigo con sus caracterísiticas	
-  if (genera <= 6 && genera <= 6) { //Ajolote
-    enemigo.features.attack = 40;
-    enemigo.features.defense = 40;
-    enemigo.name = AXOLOTL;
-  }
-  if (genera >= 7 && genera <= 11) { //Troll
-    enemigo.features.attack = 60;
-    enemigo.features.defense = 80;
-    enemigo.name = TROLL;
-  }
-  if (genera >= 12 && genera <= 15) { //Orc
-    enemigo.features.attack = 80;
-    enemigo.features.defense = 120;
-	enemigo.name = ORC;  
+	//En función del valor obtenido por el dado en el dado generaremos el enemigo con sus caracterísiticas	
+	if (genera <= 6 && genera <= 6) { //Ajolote
+		enemigo.features.attack = 40;
+		enemigo.features.defense = 40;
+		enemigo.name = AXOLOTL;
 	}
-  if (genera >= 16 && genera <= 18) { //Hell Hound
-    enemigo.features.attack = 120;
-    enemigo.features.defense = 100;
-    enemigo.name = HELLHOUND;
-  }
-  if (genera >= 19 && genera <= 20) { //Dragon
-    enemigo.features.attack = 160;
-    enemigo.features.defense = 140;
-	enemigo.name = DRAGON;
-  }
-  enemigo.features.hp = enemigo.features.defense * 2;
+	if (genera >= 7 && genera <= 11) { //Troll
+		enemigo.features.attack = 60;
+		enemigo.features.defense = 80;
+		enemigo.name = TROLL;
+	}
+	if (genera >= 12 && genera <= 15) { //Orc
+		enemigo.features.attack = 80;
+		enemigo.features.defense = 120;
+		enemigo.name = ORC;  
+		}
+	if (genera >= 16 && genera <= 18) { //Hell Hound
+		enemigo.features.attack = 120;
+		enemigo.features.defense = 100;
+		enemigo.name = HELLHOUND;
+	}
+	if (genera >= 19 && genera <= 20) { //Dragon
+		enemigo.features.attack = 160;
+		enemigo.features.defense = 140;
+		enemigo.name = DRAGON;
+	}
+	enemigo.features.hp = enemigo.features.defense * 2;
 
-  //Mostramos el texto que identifiacará al enemigo y lo mostrará por pantalla
-  cout << "[Enemy]" << endl << "Breed: ";
+	//Mostramos el texto que identifiacará al enemigo y lo mostrará por pantalla
+	cout << "[Enemy]" << endl << "Breed: ";
 	switch(enemigo.name){
 			case 0:
 				cout << "Axolotl"<<endl;
@@ -174,35 +174,35 @@ Enemy createEnemy(Enemy & enemigo, int genera) {		//Módulo de creación del ene
 			break;
 
 		}
-  cout << "Attack: " << enemigo.features.attack << endl;
-  cout << "Defense: " << enemigo.features.defense << endl;
-  cout << "Health points: " << enemigo.features.hp <<endl;
+	cout << "Attack: " << enemigo.features.attack << endl;
+	cout << "Defense: " << enemigo.features.defense << endl;
+	cout << "Health points: " << enemigo.features.hp <<endl;
   
-  return enemigo;
+	return enemigo;
 
 }
 
 void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida){	//Subdivisión del módulo fight en el que es el turno del héroe
 		
-		int dado, damage, newattack, newdefense, hp;
-		huida = 0;					//Ponemos a huidas a 0 para que pueda volver a hacer runaway ya que ha atacado
-		hp = enemy.features.hp;
+	int dado, damage, newattack, newdefense, hp;
+	huida = 0;									//Ponemos a huidas a 0 para que pueda volver a hacer runaway ya que ha atacado
+	hp = enemy.features.hp;
 		
-		//Calculamos el ataque del héroe
-		cout << "[Hero -> Enemy]"<<endl;		
-		dado = rollDice()*5;						
+	//Calculamos el ataque del héroe
+	cout << "[Hero -> Enemy]"<<endl;		
+	dado = rollDice()*5;						
 		
-		//En caso de haber actvidado el special desde el menú se efectuará el ataque con dado *3
-		if(super == 1 && hero.special == true){			
-			hero.special = false;
-			newattack = hero.features.attack + dado*3;
-			cout << "Attack: " << hero.features.attack << " + " << dado*3<<endl;	
-		}
-		//En caso de no haber activado el special desde el menú se efectuará el ataque con dado normal 
-		else {											
-			newattack = hero.features.attack + dado;
-			cout << "Attack: " << hero.features.attack << " + " << dado<<endl;
-		}
+	//En caso de haber actvidado el special desde el menú se efectuará el ataque con dado *3
+	if(super == 1 && hero.special == true){			
+		hero.special = false;
+		newattack = hero.features.attack + dado*3;
+		cout << "Attack: " << hero.features.attack << " + " << dado*3<<endl;	
+	}
+	//En caso de no haber activado el special desde el menú se efectuará el ataque con dado normal 
+	else {											
+		newattack = hero.features.attack + dado;
+		cout << "Attack: " << hero.features.attack << " + " << dado<<endl;
+	}
 	
 	//Calculamos la defensa del héroe
 	dado = rollDice()*5;
@@ -228,13 +228,13 @@ void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida)
 		enemy.features.hp = 0;
 	}
 	cout << "Enemy health points: " << enemy.features.hp << endl;
+	
 }	
 
 void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud){	//Subdivisión del modulo fight para el turno enemigo
 		
 		int dado, damage, newattack, newdefense, hp;
 		hp = hero.features.hp;
-		
 		cout << "[Enemy -> Hero]"<<endl;		
 		
 		//Calculamos el ataque del enemigo
@@ -276,7 +276,7 @@ void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, 
 	}
 
 
-void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &longitud) {		//Pelea contra el enemigo
+void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &longitud) {
 	
 	//Llamamos a el ataque del héroe
 	ataqueheroe(hero, enemy, super, genera, huida);
@@ -311,7 +311,7 @@ void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &
 	}
 }
 
-void report(const Hero & hero, int longitud) {		//Módulo que muestra las estadísitcas del héroe
+void report(const Hero & hero, int longitud) {							//Módulo que muestra las estadísitcas del héroe
 	
 	int i, total_kills;
 	total_kills = 0;
@@ -350,15 +350,15 @@ void report(const Hero & hero, int longitud) {		//Módulo que muestra las estad�
 	cout << total_kills<<endl;
 }
 
-void showMenu() {		//Módulo que muestra el menu de opciones
+void showMenu() { 														//Módulo que muestra el menu de opciones
 	  
 	cout << "[Options]" << endl <<
-	"1- Fight" << endl <<
-	"2- Run away" << endl <<
-	"3- Special" << endl <<
-	"4- Report" << endl <<
-	"q- Quit" << endl <<
-	"Option: ";
+			"1- Fight" << endl <<
+			"2- Run away" << endl <<
+			"3- Special" << endl <<
+			"4- Report" << endl <<
+			"q- Quit" << endl <<
+			"Option: ";
 }
 
 int main(int argc, char * argv[]) {
@@ -369,11 +369,11 @@ int main(int argc, char * argv[]) {
 	char opcion;
 
 	if (argc != 2) { // Si los parámetros no son correctos, el programa termina inmediatamente
-   		cout << "Usage: " << argv[0] << " <seed>" << endl;
+		cout << "Usage: " << argv[0] << " <seed>" << endl;
 	}
 	
 	else {
-    		srand(atoi(argv[1])); // Introducimos la semilla para generar números aleatorios
+		srand(atoi(argv[1])); // Introducimos la semilla para generar números aleatorios
 	}
 	
 	//Creamos al héroe y a su primer enemigo
@@ -435,13 +435,14 @@ int main(int argc, char * argv[]) {
 					return 0;
 				}
 				if(enemigo.features.hp <= 0){	//Si el enemigo ha muerto se vuelve a generar otro
-						genera = rollDice();
-						createEnemy(enemigo, genera);				
+					genera = rollDice();
+					createEnemy(enemigo, genera);				
 				}
 			
 			
 			}
 				
-		} while (error == 1 || opcion != 'q' || player.features.hp != 0);
+		} while (error == 1 || opcion != 'q' || player.features.hp != 0);	//Estará en bucle hasta que muera 
+
 }
 
