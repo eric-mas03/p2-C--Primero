@@ -58,9 +58,11 @@ void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida)
 void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud);
 void report(const Hero & hero, int longitud);
 
-Hero createHero(Heroe &player, int & longitud) {						//Módulo de creación del personaje
-  int i, error, ataque, defensa;
+Hero createHero(Heroe &player, int & longitud) {		//Módulo de creación del personaje
+	
+  int i, ataque, defensa;
   char barra;
+  bool error;
   
 	do {
 	error = 0;
@@ -71,13 +73,16 @@ Hero createHero(Heroe &player, int & longitud) {						//Módulo de creación del
 	
 	//Leemos los caracteres insertados para verificar que no se incumplan condiciones
     for (i = 0; i < longitud; i++) {		
-	  if (error == 0) {
-         if (isdigit(player.name[0]) == 1) {
-          error = 1;
-         } 
-         else if (isalnum(player.name[i]) == 1 || isblank(player.name[i]) == 1) {
+	  if (error == 0) { 
+         if (isalnum(player.name[i]) != 0 || isblank(player.name[i]) != 0){
           error = 0;
 		 }
+		 if (isalnum(player.name[i]) == 0 && isblank(player.name[i]) == 0){
+		  error = 1;
+		 }       
+		 if (isdigit(player.name[0]) == 1) {
+          error = 1;
+         } 
        }
      }
 
@@ -117,7 +122,7 @@ Hero createHero(Heroe &player, int & longitud) {						//Módulo de creación del
   	return player;
 }
 
-Enemy createEnemy(Enemy & enemigo, int genera) {						//Módulo de creación del enemigo
+Enemy createEnemy(Enemy & enemigo, int genera) {		//Módulo de creación del enemigo
 
 	//En función del valor obtenido por el dado en el dado generaremos el enemigo con sus caracterísiticas	
 	if (genera <= 6 && genera <= 6) { //Ajolote
@@ -182,7 +187,7 @@ Enemy createEnemy(Enemy & enemigo, int genera) {						//Módulo de creación del
 
 }
 
-void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida){	//Subdivisión del módulo fight en el que es el turno del héroe
+void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida){		//Subdivisión del módulo fight en el que es el turno del héroe
 		
 	int dado, damage, newattack, newdefense, hp;
 	huida = 0;									//Ponemos a huidas a 0 para que pueda volver a hacer runaway ya que ha atacado
@@ -231,7 +236,7 @@ void ataqueheroe(Hero & hero, Enemy & enemy, int &super, int genera, int &huida)
 	
 }	
 
-void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud){	//Subdivisión del modulo fight para el turno enemigo
+void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int & longitud){		//Subdivisión del modulo fight para el turno enemigo
 		
 		int dado, damage, newattack, newdefense, hp;
 		hp = hero.features.hp;
@@ -275,8 +280,7 @@ void ataquenemy(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, 
 		}
 	}
 
-
-void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &longitud) {
+void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &longitud) {			// Pelea con turnos
 	
 	//Llamamos a el ataque del héroe
 	ataqueheroe(hero, enemy, super, genera, huida);
@@ -311,7 +315,7 @@ void fight(Hero & hero, Enemy & enemy, int &super, int genera, int &huida, int &
 	}
 }
 
-void report(const Hero & hero, int longitud) {							//Módulo que muestra las estadísitcas del héroe
+void report(const Hero & hero, int longitud) {		//Módulo que muestra las estadísitcas del héroe
 	
 	int i, total_kills;
 	total_kills = 0;
@@ -350,7 +354,7 @@ void report(const Hero & hero, int longitud) {							//Módulo que muestra las e
 	cout << total_kills<<endl;
 }
 
-void showMenu() { 														//Módulo que muestra el menu de opciones
+void showMenu() {		//Módulo que muestra el menu de opciones
 	  
 	cout << "[Options]" << endl <<
 			"1- Fight" << endl <<
