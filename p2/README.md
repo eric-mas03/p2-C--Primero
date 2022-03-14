@@ -10,6 +10,7 @@
 #include <cstring>
 #include <stdio.h>
 #include <vector>
+#include <fstream>
 
 
 using namespace std;
@@ -217,7 +218,7 @@ void addBook(BookStore &bookStore, int &pos) {
 		
 	}while(fail == true);
 		
- for(i = 0 ; i< libros.title.length(); i++){
+ for(i = 0 ; i < longitud; i++){
    if(isalpha(libros.title[i])){
       libros.slug[i] = tolower(libros.title[i]);
    }
@@ -228,7 +229,12 @@ void addBook(BookStore &bookStore, int &pos) {
       libros.slug[i] = libros.title[i];
     } 
  }
+ 
+libros.id =  bookStore.nextId;
+bookStore.nextId++;
+ 
 bookStore.books.push_back(libros);
+
 
 }
 
@@ -240,31 +246,144 @@ void showExtendedCatalog(const BookStore &bookStore) {
 */
 void deleteBook(BookStore &bookStore) {
   string deleteid;
-  int buscado, i;
-
+  int unsigned longitud, i, buscado;
+  longitud = bookStore.books.size();
+  
   cout << "Enter book id: ";
   getline(cin, deleteid);
   if(deleteid.length() > 0){
     buscado = stoi(deleteid);
-      for(i = 0; i<bookStore.books.size(); i++){
-      if(bookStore.books[i].id == buscado){
-       cout << "Falta borrar"<<endl;
-      }
-    }
-  
+    
+      for(i = 0; i < longitud ; i++){
+		  if(bookStore.books[i].id == buscado){
+		   bookStore.books.erase(bookStore.books.begin()+i);
+		  }
+	  }
+  }
   else{
      error(ERR_ID);
   }
-  }
+}
+
+
+void importFromCsv(BookStore &bookStore){
+		string filename, t;
+		int i = 0;
+		Book books;
+		bool fin = false;
+		
+		cout << "Enter filename: ";
+		getline(cin, filename);
+		
+		
+		ifstream f1(filename);
+			if(f1.is_open()){
+				
+				
+				string s;
+				while(getline(f1,s) && !fin){
+				
+				if(s[i] == '"'){
+					i++;
+					
+					while(s.size() && !fin){
+						
+						if(s[i] != '"' && !fin){
+							t = t+s[i];
+							cout << t;
+							books.title = t;
+							i++;
+							fin = false;
+						
+						}
+						else{
+							fin = true;
+							i++;
+						}
+						
+						if(s[i] == ',' && s[i+2] == '"'){
+							i = i + 2;
+							t = "";
+								while(s.size() && !fin){
+								
+								if(s[i] != '"' && !fin){
+									t = t+s[i];
+									cout << t;
+									books.authors = t;
+									i++;
+									fin = false;
+								
+								}
+								else{
+									fin = true;
+									i++;
+								}
+						
+							
+							}
+					}
+				}
+				
+				f1.close();
+				}
+			}
+			}
+				else{
+				error(ERR_FILE);
+				}
+		
+		
+bookStore.books.push_back(books);
+}
+	
+	
+
+
+
+void importExportMenu(BookStore &bookStore) {
+	bool fail;
+	char option;
+	
+	do{
+		cout<<"[Import/export options]"<<endl
+		<<"1- Import from CSV"<<endl
+		<<"2- Export from CSV"<<endl
+		<<"3- Load data"<<endl
+		<<"4- Save data"<<endl
+		<<"b- Back to main menu"<<endl
+		<<"Option: ";
+		cin >> option;
+		cin.get();
+		switch (option) {
+		  case '1':
+			importFromCsv(bookStore);
+			fail = true;
+			break;
+		  case '2':
+			//Export
+			fail = true;
+			break;
+		  case '3':
+			//Load
+			fail = true;
+			break;
+		  case '4':
+			//Save
+			fail = true;
+			break;
+		  case 'b':
+			//Back
+			fail = false;
+			break;
+		  default:
+			error(ERR_OPTION);
+			fail = true;
+		}
+	}while(fail);
+	
 }
 
 /*
-void importExportMenu(BookStore &bookStore) {
-}
-
-void importFromCsv(BookStore &bookStore){
-}
-
 void exportToCsv(const BookStore &bookStore){
 }
 
@@ -300,10 +419,10 @@ int main(int argc, char *argv[]) {
         addBook(bookStore, i);
         break;
       case '4':
-        deleteBook(bookStore, i);
+        deleteBook(bookStore);
         break;
       case '5':
-        //importExportMenu(bookStore);
+        importExportMenu(bookStore);
         break;
       case 'q':
         break;
@@ -314,6 +433,7 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+
   
   
 
