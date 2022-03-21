@@ -107,7 +107,7 @@ void showCatalog(const BookStore &bookStore, Book & libros, int &pos) {
 	
 	for(i = 0; i<bookStore.books.size(); i++){
 		int ident = i+1;
-		cout << ident << ". " << bookStore.books[i].title <<
+		cout << ident << ". " << bookStore.books[i].title << ", " << bookStore.books[i].authors <<
 		" (" << bookStore.books[i].year << "), " << bookStore.books[i].price <<endl; 
 	}
 	
@@ -220,13 +220,13 @@ void addBook(BookStore &bookStore, int &pos) {
 		
  for(i = 0 ; i < longitud; i++){
    if(isalpha(libros.title[i])){
-      libros.slug[i] = tolower(libros.title[i]);
+      libros.slug += tolower(libros.title[i]);
    }
     if(isblank(libros.title[i]) != 0 || libros.title[i] == ';' || libros.title[i] == ':' || libros.title[i] == '-' ){
       libros.slug[i] = '-';
     }
     else{
-      libros.slug[i] = libros.title[i];
+      libros.slug += libros.title[i];
     } 
  }
  
@@ -244,33 +244,35 @@ void showExtendedCatalog(const BookStore &bookStore) {
 
 
 */
-void deleteBook(BookStore &bookStore) {
-  string deleteid;
-  int unsigned longitud, i, buscado;
+void deleteBook(BookStore &bookStore) { //No funciona el dete BOOK MIralo ---------------------
+  int unsigned deleteid;
+  int unsigned longitud, i;
+  bool encontrado = false;
   longitud = bookStore.books.size();
-  
+  i = 0;
   cout << "Enter book id: ";
-  getline(cin, deleteid);
-  if(deleteid.length() > 0){
-    buscado = stoi(deleteid);
-    
-      for(i = 0; i < longitud ; i++){
-		  if(bookStore.books[i].id == buscado){
-		   bookStore.books.erase(bookStore.books.begin()+i);
+  cin >> deleteid;
+  
+      for(i = 0; i < longitud && !encontrado; i++){
+		  if(bookStore.books[i].id == deleteid){
+		   bookStore.books.erase(bookStore.books.begin()+deleteid);
+		   encontrado = true;
 		  }
 	  }
-  }
-  else{
-     error(ERR_ID);
-  }
+  
+	  if(encontrado == false){
+		 error(ERR_ID);
+	  }
 }
 
 
 void importFromCsv(BookStore &bookStore){
-		string filename, t;
-		int i = 0;
+		string filename, t, authors;
+		int unsigned i;
 		Book books;
-		bool fin = false;
+		string line;
+		
+		
 		
 		cout << "Enter filename: ";
 		getline(cin, filename);
@@ -279,64 +281,113 @@ void importFromCsv(BookStore &bookStore){
 		ifstream f1(filename);
 			if(f1.is_open()){
 				
-				
-				string s;
-				while(getline(f1,s) && !fin){
-				
-				if(s[i] == '"'){
+				while(getline(f1,line)){
+					i = 0;
+					string titulo, autor, fecha, slug, price;
+					while(i<line.length() && line[i] != '"'){
+						i++;
+					}
 					i++;
 					
-					while(s.size() && !fin){
-						
-						if(s[i] != '"' && !fin){
-							t = t+s[i];
-							cout << t;
-							books.title = t;
-							i++;
-							fin = false;
-						
-						}
-						else{
-							fin = true;
-							i++;
-						}
-						
-						if(s[i] == ',' && s[i+2] == '"'){
-							i = i + 2;
-							t = "";
-								while(s.size() && !fin){
-								
-								if(s[i] != '"' && !fin){
-									t = t+s[i];
-									cout << t;
-									books.authors = t;
-									i++;
-									fin = false;
-								
-								}
-								else{
-									fin = true;
-									i++;
-								}
-						
-							
-							}
+					while(line[i] != '"' && i<line.length() ){
+						titulo += line[i];		//Leemos titulo
+						i++;
 					}
+					i++;
+					books.title = titulo;		//Agregamos el titulo
+					
+					while(line[i] != ',' && i<line.length() ){
+						i++;
+					}
+					i++;
+					while(line[i] != '"' && i<line.length() ){
+						i++;
+					}
+					i++;
+					while(i<line.length() && line[i] != '"'){
+						autor += line[i];		//Leemos autor
+						i++;
+					}
+					i++;
+					books.authors = autor;
+					
+					while(line[i] != ',' && i<line.length() ){
+						i++;
+					}
+					i++;
+					
+					while(line[i] != ',' && i<line.length() ){
+						fecha += line[i];
+						i++;
+					}
+					i++;
+					
+					if(fecha.length() > 0){
+						books.year = stoi(fecha);
+					}
+					while(line[i] != '"' && i<line.length()){
+						i++;
+					}
+					i++;
+					while(line[i] != '"' && i<line.length()){
+						slug += line[i];
+						i++;
+					}
+					i++;
+					books.slug = slug;
+					
+					while(line[i] != ',' && i<line.length() ){
+						i++;
+					}
+					i++;
+					while(i<line.length()){
+						price += line[i];
+						i++;
+					}
+					if(price.length() > 0){
+						books.price = stof(price);
+					}
+					
+					bookStore.books.push_back(books);
 				}
+					f1.close();
 				
-				f1.close();
-				}
 			}
-			}
+			
 				else{
 				error(ERR_FILE);
 				}
-		
-		
-bookStore.books.push_back(books);
 }
 	
+void exportToCsv(const BookStore &bookStore){
+	string filename;
+	int unsigned i;
+	i = 0;
 	
+	cout << "Enter filename: ";
+	getline(cin,filename);
+	
+	if(filename.size()>0){
+		ofstream fe(filename);
+		
+		
+			if(fe.is_open()){
+				for(i = 0; i<bookStore.books.size(); i++){
+					fe << '"' << bookStore.books[i].title << '"' 
+					   << ',' << '"'
+					   <<bookStore.books[i].authors << '"' << ','
+					   <<bookStore.books[i].year <<',' << '"'
+					   <<bookStore.books[i].slug <<'"' << ','
+					   <<bookStore.books[i].price<<endl;
+				}
+				fe.close();
+				
+			}
+			else{
+				error(ERR_FILE);
+			}	
+		}
+}
 
 
 
@@ -360,7 +411,7 @@ void importExportMenu(BookStore &bookStore) {
 			fail = true;
 			break;
 		  case '2':
-			//Export
+			exportToCsv(bookStore);
 			fail = true;
 			break;
 		  case '3':
@@ -371,8 +422,7 @@ void importExportMenu(BookStore &bookStore) {
 			//Save
 			fail = true;
 			break;
-		  case 'b':
-			//Back
+		  case 'b': //BACK
 			fail = false;
 			break;
 		  default:
@@ -383,10 +433,8 @@ void importExportMenu(BookStore &bookStore) {
 	
 }
 
-/*
-void exportToCsv(const BookStore &bookStore){
-}
 
+/*
 void loadData(BookStore &bookStore){
 }
 
@@ -433,8 +481,5 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
-  
-  
 
 ```
