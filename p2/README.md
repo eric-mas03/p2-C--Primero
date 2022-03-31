@@ -206,7 +206,7 @@ void authors(BookStore &bookStore, Book &libros, bool &import, string &autores){
 					}
 					else if (libros.authors[i] != ',' && libros.authors[i] != ':' && libros.authors[i] != '-' ){
 						fail = true;
-						error(ERR_BOOK_TITLE);
+						error(ERR_BOOK_AUTHORS);
 						if(import == true){
 							import = false;
 							pass = true;
@@ -215,7 +215,7 @@ void authors(BookStore &bookStore, Book &libros, bool &import, string &autores){
 				}
 			}
 		}
-	}while(fail == true || pass); 
+	}while(fail == true && !pass); 
 }
 
 //Submódulo de addBook para la fecha de publicación
@@ -248,7 +248,7 @@ void anos(BookStore &bookStore, Book &libros, bool &import, string &fecha){
 				break;
 			}
 		}
-	}while(fail == true || pass);
+	}while(fail == true && !pass);
 }
 
 //Submódulo de addBook para el precio
@@ -284,7 +284,7 @@ void precio(BookStore &bookStore, Book &libros, bool &import, string &price){
 				pass = true;
 			}
 		}
-	}while(fail == true || pass);	
+	}while(fail == true && !pass);	
 }
 
 //Submódulo de addBook para un título modificado
@@ -697,5 +697,6 @@ int main(int argc, char *argv[]) {
 	}
   return 0;
 }
+
 
 ```
