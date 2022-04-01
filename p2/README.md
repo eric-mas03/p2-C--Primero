@@ -5,13 +5,14 @@
 * Grupo 1
 */
 #include <iostream>
-#include <cstdlib> // Para rand(), srand() y atoi()
+#include <cstdlib>
 #include <cstring>
 #include <stdio.h>
 #include <vector>
 #include <fstream>
 using namespace std;
 
+//Definicion de estrucutras y constantes
 const int KMAXSTRING = 50;
 
 enum Error {
@@ -86,17 +87,13 @@ void error(Error e) {
 
 //Menú principal
 void showMainMenu() {
-  cout << "[Options]" << endl
-       << "1- Show catalog" << endl
-       << "2- Show extended catalog" << endl
-       << "3- Add book" << endl
-       << "4- Delete book" << endl
-       << "5- Import/export" << endl
-       << "q- Quit" << endl
-       << "Option: ";
+  cout << "[Options]" << endl << "1- Show catalog" << endl
+       << "2- Show extended catalog" << endl << "3- Add book" << endl
+       << "4- Delete book" << endl << "5- Import/export" << endl
+       << "q- Quit" << endl << "Option: ";
 }
 
-//Catalogo simplificado 
+//Catalogo simplificado donde recorremos el vector
 void showCatalog(const BookStore &bookStore, Book & libros) {
 
 	for(int unsigned i = 0; i<bookStore.books.size(); i++){
@@ -106,7 +103,7 @@ void showCatalog(const BookStore &bookStore, Book & libros) {
 	
 }
 
-//Catálogo con todos los datos
+//Catálogo con todos los datos donde recorremos el vector
 void showExtendedCatalog(const BookStore &bookStore) {
 
 	for(int unsigned i = 0; i<bookStore.books.size(); i++){
@@ -146,18 +143,16 @@ void titulo(BookStore &bookStore, Book &libros, bool &import, string &titulo){
 	
 	do{
 		titulotitulo(bookStore, libros, import, titulo, fail, pass);
-		if(!fail){					//Si no hay error empezamos a recorrer el título
+		if(!fail){
 			for(int unsigned i = 0; i < titulo.length(); i++){
-				if(!fail){
-					  //Si son caracteres alphanumericos o espacio no dará error
+				if(!fail){//Comprobamos los caracteres del string y si no cumplen el formato se dara error
 					  if(isalnum(libros.title[i]) == 8 || isblank(libros.title[i]) == 1){
 						fail = false;
 						}
-					  //En caso de no serlo se comprobará si está dentro de los carácteres permitidos
 					  else if((libros.title[i] != ',' && libros.title[i] != ':' && libros.title[i] != '-')){
 						error(ERR_BOOK_TITLE); 
 						fail = true;
-						if(import == true){
+						if(import == true){		//Si es desde import, se dejará de importar
 							import = false;
 							pass = true;	
 						}
@@ -168,6 +163,7 @@ void titulo(BookStore &bookStore, Book &libros, bool &import, string &titulo){
 	}while(fail == true && !pass);	
 }
 
+//Submódulo para pedir el nombre del autor sin verificarlo
 void authorname(BookStore &bookStore, Book &libros, bool &import, string &autores, bool &fail, bool &pass){
 	
 		fail = false;
@@ -178,18 +174,16 @@ void authorname(BookStore &bookStore, Book &libros, bool &import, string &autore
 		else if(import == true){
 			libros.authors = autores;
 		}
-		//Si el nombre introducido es nulo dará error
 		if(libros.authors.empty()){					
 		  libros.authors = " ";
 		  fail = true;
 		  error(ERR_BOOK_AUTHORS);					
 		}
-		if(fail == true && import == true){
+		if(fail == true && import == true){		//Si es desde import, se dejará de importar
 			import = false;
 			pass = true;
 		}
 }
-
 //Submódulo de addBook para los autores
 void authors(BookStore &bookStore, Book &libros, bool &import, string &autores){
 	bool fail;
@@ -198,7 +192,7 @@ void authors(BookStore &bookStore, Book &libros, bool &import, string &autores){
 	authorname(bookStore, libros, import, autores, fail, pass);
 	
 	do{
-		if(!fail){									
+		if(!fail){//Comprobamos si los caracteres cumplen el formato, sino, se dará error									
 			for(int unsigned i = 0; i < libros.authors.length(); i++){
 				if(!fail){							
 					if(isalnum(libros.authors[i]) != 0 || isblank(libros.authors[i]) != 0){			
@@ -207,7 +201,7 @@ void authors(BookStore &bookStore, Book &libros, bool &import, string &autores){
 					else if (libros.authors[i] != ',' && libros.authors[i] != ':' && libros.authors[i] != '-' ){
 						fail = true;
 						error(ERR_BOOK_AUTHORS);
-						if(import == true){
+						if(import == true){		//Si es desde import, se dejará de importar
 							import = false;
 							pass = true;
 						}
@@ -233,16 +227,21 @@ void anos(BookStore &bookStore, Book &libros, bool &import, string &fecha){
 			yearstr = fecha;
 		}
 		if(yearstr.length() > 0){					
-			libros.year = stoi(yearstr);	//Transformamos la cadena a un int
+			libros.year = stoi(yearstr);	
 			if(libros.year <= 1440 || libros.year >= 2022){
 				fail = true;
 				error(ERR_BOOK_DATE);
+				if(import == true){		//Si es desde import, se dejará de importar
+					import = false;
+					pass = true;
+					break;
 				}
+			}
 		}
 		else{
 			error(ERR_BOOK_DATE);
 			fail = true;
-			if(import == true){
+			if(import == true){			//Si es desde import, se dejará de importar
 				import = false;
 				pass = true;
 				break;
@@ -266,11 +265,11 @@ void precio(BookStore &bookStore, Book &libros, bool &import, string &price){
 			pricestr = price;
 		}
 		if(pricestr.length() > 0){			
-			libros.price = stof(pricestr);	//Transformamos la cadena a un float
+			libros.price = stof(pricestr);
 			if(libros.price <= 0){			
 				fail = true;				
 				error(ERR_BOOK_PRICE);
-				if(import == true){
+				if(import == true){			//Si es desde import, se dejará de importar
 					import = false;
 					pass = true;
 				}
@@ -279,7 +278,7 @@ void precio(BookStore &bookStore, Book &libros, bool &import, string &price){
 		else{
 			error(ERR_BOOK_PRICE);
 			fail = true;
-			if(import == true){
+			if(import == true){				//Si es desde import, se dejará de importar
 				import = false;
 				pass = true;
 			}
@@ -289,13 +288,13 @@ void precio(BookStore &bookStore, Book &libros, bool &import, string &price){
 
 //Submódulo de addBook para un título modificado
 void slug(BookStore &bookStore, Book &libros){
-	
+	//Transformamos todos los caracteres no alphanumericos a guiones
 	for(int unsigned j = 0 ; j < libros.title.length(); j++){
 		libros.slug += tolower(libros.title[j]);
 		if(isblank(libros.title[j]) != 0 || libros.title[j] == ',' || libros.title[j] == ':' || libros.title[j] == '-' ){
 		  libros.slug[j] = '-';
 		}
-	}
+	}//Si lleva comillas al inicio o al final se deben borrar
 	if(libros.slug[0] == '-'){
 		libros.slug.erase(libros.slug.begin());
 	}
@@ -388,7 +387,8 @@ void saveData(const BookStore &bookStore){
 		}
 }
 
-void loadData2(BookStore &bookStore, string bindata, string filename,BinBook &binbooks, BinBookStore &binstore){
+//Submodulo de loadData para cargar los datos en binario
+void loadData2(BookStore &bookStore, string bindata, string filename,BinBook &binbooks, BinBookStore &binstore, bool &argumenterror, bool &intento){
 	Book books;
 	
 	ifstream fl(filename, ios::binary);			
@@ -409,12 +409,15 @@ void loadData2(BookStore &bookStore, string bindata, string filename,BinBook &bi
 				
 				fl.close();
 			}else{
-				error(ERR_FILE);		
+				error(ERR_FILE);
+				if(intento == true){
+					argumenterror = true;
+					intento = false;
+				}		
 			}
 	}
-
-//Cargar los datos en binario
-void loadData(BookStore &bookStore, string bindata, bool &doscheck){ //NO SE POR DONDE EMPEZAR DIRECTAMENTE.
+//Advertencia sobre los datos y pide el nombre del fichero binario
+void loadData(BookStore &bookStore, string bindata, bool &doscheck, bool &intento, bool &argumenterror){
 	
 	Book books;
 	BinBook binbooks;
@@ -423,7 +426,7 @@ void loadData(BookStore &bookStore, string bindata, bool &doscheck){ //NO SE POR
 	string filename;
 	
 	bookStore.books.clear();		
-		if(!bindata.empty()){
+		if(!bindata.empty()){//Si no esta vacio es que ha se ha pasado algun argumento con nombre de archivo
 			filename = bindata;
 			doscheck = true;
 		}
@@ -438,7 +441,7 @@ void loadData(BookStore &bookStore, string bindata, bool &doscheck){ //NO SE POR
 					getline(cin, filename);
 				}
 		}
-		loadData2(bookStore, bindata, filename, binbooks, binstore);
+		loadData2(bookStore, bindata, filename, binbooks, binstore, intento, argumenterror);
 }
 
 //Exportar los datos a un txt normal
@@ -468,13 +471,83 @@ void exportToCsv(const BookStore &bookStore){
 	}
 }
 
+//Parte de leer el título y el autor de importFromCSV
+void tituloautor(BookStore &bookStore, string data, bool &unocheck, string &titulolibro, string &autor, bool &import, int unsigned &i, string &line, Book &books){			
+		if(import){
+			while(i<line.length() && line[i] != '"' && import){
+				i++;
+			}i++;
+		}
+		if(import){	
+			while(line[i] != '"' && i<line.length()  && import){
+				titulolibro += line[i];	
+				i++;
+			}i++;
+			titulo(bookStore, books, import, titulolibro);
+		}
+		if(import){	
+			while(line[i] != ',' && i<line.length()  && import){
+				i++;
+			}i++;
+		}
+		if(import){	
+			while(line[i] != '"' && i<line.length()  && import){
+				i++;
+			}i++;
+		}
+		if(import){		
+			while(i<line.length() && line[i] != '"' && import){
+				autor += line[i];
+				i++;
+			}i++;
+			authors(bookStore, books, import, autor);
+		}
+		if(import){		
+			while(line[i] != ',' && i<line.length() && import){
+				i++;
+			}i++;
+		}
+}
+//Parte de leer los años, el slug, y el precio de importFromCSV
+void anosslugprecio(BookStore &bookStore, string data, bool &unocheck, string &fecha, string &slug, string &price, bool &import, int unsigned &i, string &line, Book &books) {
+		if(import){		
+			while(line[i] != ',' && i<line.length()  && import){
+				fecha += line[i];
+				i++;
+			}i++;
+			anos(bookStore, books, import, fecha);
+		}
+		if(import){	
+			while(line[i] != '"' && i<line.length() && import){
+				i++;
+			}i++;
+		}
+		if(import){	
+			while(line[i] != '"' && i<line.length() && import){
+				slug += line[i];
+				i++;
+			}i++;
+			books.slug = slug;
+		}
+		if(import){	
+			while(line[i] != ',' && i<line.length() && import){
+				i++;
+			}i++;
+		}
+		if(import){
+			while(i<line.length()){
+				price += line[i];
+				i++;
+			}
+		precio(bookStore, books, import, price);
+	}
+}
+
 //Importar los datos de un txt normal
-void importFromCsv(BookStore &bookStore, string data, bool &unocheck){
-		
+void importFromCsv(BookStore &bookStore, string data, bool &unocheck, bool &intento, bool &argumenterror){
 		bool import = true;
-		string filename, t;
+		string filename, line;
 		Book books;
-		string line;
 		
 		if(data.size() > 0){
 			filename = data;
@@ -489,82 +562,10 @@ void importFromCsv(BookStore &bookStore, string data, bool &unocheck){
 						import = true;
 						int unsigned i = 0;
 						string titulolibro, autor, fecha, slug, price;
-						if(import){
-							while(i<line.length() && line[i] != '"' && import){
-								i++;
-							}
-							i++;
-						}
-						if(import){	
-							while(line[i] != '"' && i<line.length()  && import){
-								titulolibro += line[i];	
-								i++;
-							}
-							i++;
-							titulo(bookStore, books, import, titulolibro);
-						}
-						if(import){	
-							while(line[i] != ',' && i<line.length()  && import){
-								i++;
-							}
-							i++;
-						}
-						if(import){	
-							while(line[i] != '"' && i<line.length()  && import){
-								i++;
-							}
-							i++;
-						}
-						if(import){		
-							while(i<line.length() && line[i] != '"' && import){
-								autor += line[i];
-								i++;
-							}
-							i++;
-							authors(bookStore, books, import, autor);
-						}
-						if(import){		
-							while(line[i] != ',' && i<line.length() && import){
-								i++;
-							}
-							i++;
-						}
-						if(import){		
-							while(line[i] != ',' && i<line.length()  && import){
-								fecha += line[i];
-								i++;
-							}
-							i++;
-							anos(bookStore, books, import, fecha);
-						}
-						if(import){	
-							while(line[i] != '"' && i<line.length() && import){
-								i++;
-							}
-							i++;
-						}
-						if(import){	
-							while(line[i] != '"' && i<line.length() && import){
-								slug += line[i];
-								i++;
-							}
-							i++;
-							books.slug = slug;
-						}
-						if(import){	
-							while(line[i] != ',' && i<line.length() && import){
-								i++;
-							}
-							i++;
-						}
-						if(import){
-							while(i<line.length()){
-								price += line[i];
-								i++;
-							}
-						precio(bookStore, books, import, price);
-						}	
-						if(import){
+						
+						tituloautor(bookStore, data, unocheck, titulolibro, autor, import, i, line, books);
+						anosslugprecio(bookStore, data, unocheck, fecha, slug, price, import, i, line, books);
+						if(import){		//Si se llega al final sin ningún fallo entonces se hará pushback
 							books.id = bookStore.nextId;
 							bookStore.nextId++;
 							bookStore.books.push_back(books);
@@ -573,13 +574,17 @@ void importFromCsv(BookStore &bookStore, string data, bool &unocheck){
 						fl.close();
 				}	
 				else{
-				error(ERR_FILE);
+					error(ERR_FILE);
+					if(intento == true){
+						argumenterror = true;
+						intento = false;
+					}
 				}
 }
 
 //Submenú para importar/Exportar datos en el programa
 void importExportMenu(BookStore &bookStore, string data, string bindata, bool &unocheck, bool &doscheck) {
-	bool fail;
+	bool fail = true, intento = false, argumenterror = false;
 	char option;
 	
 	do{
@@ -590,7 +595,7 @@ void importExportMenu(BookStore &bookStore, string data, string bindata, bool &u
 		cin.get();
 		switch (option) {
 		  case '1':
-			importFromCsv(bookStore, data, unocheck);
+			importFromCsv(bookStore, data, unocheck, intento, argumenterror);
 			fail = true;
 			break;
 		  case '2':
@@ -598,7 +603,7 @@ void importExportMenu(BookStore &bookStore, string data, string bindata, bool &u
 			fail = true;
 			break;
 		  case '3':
-			loadData(bookStore, bindata, doscheck);
+			loadData(bookStore, bindata, doscheck, intento, argumenterror);
 			fail = true;
 			break;
 		  case '4':
@@ -615,58 +620,56 @@ void importExportMenu(BookStore &bookStore, string data, string bindata, bool &u
 	}while(fail);
 }
 
-
-//Módulo principal
-int main(int argc, char *argv[]) {
-
-  BookStore bookStore;
-  bookStore.name = "My Book Store";
-  bookStore.nextId = 1;
-  int countimport = 0, countload = 0;
-  Book libros;
-  char option;
-  string bindata, data;
-  bool unocheck= false, doscheck = false, argumenterror = false;    
- 
-     if(argc <= 5) {
+//Módulo de comprobación de los argumentos
+void argcheck(int argc, char *argv[], bool &argumenterror, BookStore &bookStore){
+	bool unocheck= false, doscheck = false, intento = true;
+	argumenterror = false;
+	int countload = 0, countimport = 0;
+	string data, bindata;
+	
+	if(argc <= 5) {
 		for( int i = 0; i<argc; i++){
-			if(i%2 != 0 && i != 0){
-				if(strcmp(argv[i],"-i") == 0 && countimport == 0){
+			if(i%2 != 0 && i != 0){		//Las posiciones imparse son las posiciones donde esta el argumento, las pares el nombre
+				if(countimport == 0 && strcmp(argv[i],"-i") == 0){		//No puede aparecer el mismo argumento 2 veces, por lo que aumentamos contador
 					if(i+1 < argc){
-						data = argv[i+1];
 						countimport++;
+						data = argv[i+1];
 					}
 					else if (!argumenterror){
-						error(ERR_ARGS);
 						argumenterror = true;
+						error(ERR_ARGS);
 					}
 				}
-				else if (strcmp(argv[i],"-l") == 0 && countload == 0){
+				else if (countload == 0 && strcmp(argv[i],"-l") == 0){	//No puede aparecer el mismo argumento 2 veces, por lo que aumentamos contador
 					if(i+1 < argc){
-						bindata = argv[i+1];
 						countload++;
+						bindata = argv[i+1];
 					}
 					else if (!argumenterror){
-						error(ERR_ARGS);
 						argumenterror = true;
+						error(ERR_ARGS);
 					}
 				}
-				else if (!argumenterror){
-					error(ERR_ARGS);
+				else if (!argumenterror){ 								//Si el argumento es distinto de -l o -i dará error porque no se deben usar otros
 					argumenterror = true;
+					error(ERR_ARGS);
 				}
 			}
 		}
-		
 		if(!argumenterror){
-			if(countload == 1)
-				loadData(bookStore, bindata, unocheck);
+			intento = true;
+			if(countload == 1)											// Si ha llegado bien al final, entonces realizamos la funcion de los argumentos en orden
+				loadData(bookStore, bindata, unocheck, intento, argumenterror);
 			if(countimport == 1)
-				importFromCsv(bookStore, data, doscheck);
+				importFromCsv(bookStore, data, doscheck, intento, argumenterror);
+			intento = false;
 		}
 	}
-	
-	if(argumenterror == false){  
+}
+
+//Menu de selección de la opción escogida
+void menuoptions(BookStore &bookStore, char &option, Book libros, string data, string bindata, bool &unocheck, bool &doscheck, bool &argumenterror){	
+		if(argumenterror == false){  
 		do {
 			showMainMenu();
 			cin >> option;
@@ -695,8 +698,20 @@ int main(int argc, char *argv[]) {
 			}
 		} while (option != 'q');
 	}
-  return 0;
 }
 
-
+//Módulo principal
+int main(int argc, char *argv[]) {
+  BookStore bookStore;
+  bookStore.name = "My Book Store";
+  bookStore.nextId = 1;
+  Book libros;
+  char option;
+  string bindata, data;
+  bool unocheck= false, doscheck = false, argumenterror = false;    
+ 
+  argcheck(argc, argv, argumenterror, bookStore);
+  menuoptions(bookStore, option, libros, data, bindata, unocheck, doscheck, argumenterror);  
+  return 0;
+}
 ```
