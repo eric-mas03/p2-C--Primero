@@ -1,5 +1,4 @@
 /*
-/*
 * Eric Mas Belén
 * 20930249L
 * Grupo 1
@@ -714,4 +713,3 @@ int main(int argc, char *argv[]) {
   menuoptions(bookStore, option, libros, data, bindata, unocheck, doscheck, argumenterror);  
   return 0;
 }
-
