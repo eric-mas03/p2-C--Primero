@@ -1,4 +1,5 @@
 /*
+/*
 * Eric Mas Belén
 * 20930249L
 * Grupo 1
@@ -387,9 +388,8 @@ void saveData(const BookStore &bookStore){
 }
 
 //Submodulo de loadData para cargar los datos en binario
-void loadData2(BookStore &bookStore, string bindata, string filename,BinBook &binbooks, BinBookStore &binstore, bool &argumenterror, bool &intento){
+void loadData2(BookStore &bookStore, string bindata, string filename,BinBook &binbooks, BinBookStore &binstore, bool &intento, bool &argumenterror){
 	Book books;
-	
 	ifstream fl(filename, ios::binary);			
 				if(fl.is_open()){
 					fl.read((char * )&binstore, sizeof(BinBookStore));
@@ -411,7 +411,6 @@ void loadData2(BookStore &bookStore, string bindata, string filename,BinBook &bi
 				error(ERR_FILE);
 				if(intento == true){
 					argumenterror = true;
-					intento = false;
 				}		
 			}
 	}
@@ -583,7 +582,8 @@ void importFromCsv(BookStore &bookStore, string data, bool &unocheck, bool &inte
 
 //Submenú para importar/Exportar datos en el programa
 void importExportMenu(BookStore &bookStore, string data, string bindata, bool &unocheck, bool &doscheck) {
-	bool fail = true, intento = false, argumenterror = false;
+	bool fail = true, intento = false;
+	bool argumenterror;
 	char option;
 	
 	do{
@@ -657,8 +657,9 @@ void argcheck(int argc, char *argv[], bool &argumenterror, BookStore &bookStore)
 		}
 		if(!argumenterror){
 			intento = true;
-			if(countload == 1)											// Si ha llegado bien al final, entonces realizamos la funcion de los argumentos en orden
+			if(countload == 1){										// Si ha llegado bien al final, entonces realizamos la funcion de los argumentos en orden
 				loadData(bookStore, bindata, unocheck, intento, argumenterror);
+			}
 			if(countimport == 1)
 				importFromCsv(bookStore, data, doscheck, intento, argumenterror);
 			intento = false;
@@ -713,3 +714,4 @@ int main(int argc, char *argv[]) {
   menuoptions(bookStore, option, libros, data, bindata, unocheck, doscheck, argumenterror);  
   return 0;
 }
+
