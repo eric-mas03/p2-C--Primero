@@ -1,5 +1,6 @@
 #include "Betonski.h"
 
+
 Betonski::Betonski(string name){
 	if(name.empty()){
 		throw EXCEPTION_NAME;
