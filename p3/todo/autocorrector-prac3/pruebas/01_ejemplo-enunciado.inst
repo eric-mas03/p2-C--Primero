@@ -1,0 +1,20 @@
+newBetonski Sluk
+newBetonski Tisk
+newBetonski Foo
+newJankali Darkwave
+newJankali TrollMaximus
+posBetonski Sluk 2 3
+posBetonski Tisk 6 7
+posBetonski Foo 5 5
+putJunk GOLD 12 4 4
+putJunk STONE 10 4 5
+putJunk FOOD 20 4 6
+putJunk FOOD 30 5 4
+putJunk FOOD 40 5 6
+putJunk METAL 10 6 4
+putJunk METAL 15 6 5
+putJunk METAL 12 6 6
+setTrap Darkwave 4 4
+setTrap TrollMaximus 6 6
+play
+exit

@@ -1,0 +1,38 @@
+Programación 2 - Autocorrector práctica 3
+=========================================
+
+Para pasar el autocorrector, hay que copiar todos los ficheros de la
+práctica (.cc y .h) y el fichero prac3.cc en el directorio p3, entrar
+desde el terminal en el directorio autocorrector-prac3 (que debe ser
+un subdirectorio de p3) y ejecutar:
+
+./autocorrectorP2p3.sh
+
+Si se ejecuta el corrector con algún argumento, como p.ej.:
+
+./autocorrectorP2p3.sh algo
+
+solamente se probarán las pruebas unitarias, no las pruebas de
+entrada/salida (que son ficheros con instrucciones para el programa
+principal). Esta característica puede venir bien para depurar 
+las clases cuando la práctica aún no esté completa.
+
+-----------------------------------------------------------
+
+AVISO IMPORTANTE SOBRE LAS PRUEBAS UNITARIAS: hay una prueba unitaria por
+cada clase, en la que se prueban todos los métodos públicos que se indican
+en el enunciado de la práctica.
+
+Si falta algún método del diagrama o no tiene exactamente los mismos
+parámetros, no será posible compilar las pruebas unitarias y por tanto la
+nota de la práctica será 0.
+
+Es posible ejecutar las pruebas unitarias de las clases de la práctica de 
+forma incremental: Coordinate, Junk, Map, Betonski y Jankali. Lo único que 
+se necesita es que existan todos los ficheros de la práctica, aunque no
+tengan nada. Por ejemplo, si has hecho las clases Coordinate y Junk, sólo
+tienes que crear ficheros vacíos (o con blancos) para Junk.h, Junk.cc,
+Betonski.h, Betonski.cc, Jankali.h, Jankali.cc y puedes ejecutar el
+autocorrector para Coordinate y Junk  (fallará al compilar las demás pruebas
+unitarias y el programa prac3.cc, pero ejecutará las pruebas unitarias que
+pueda)

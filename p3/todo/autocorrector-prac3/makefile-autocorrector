@@ -1,0 +1,95 @@
+all: prac3 testCoordinate testJunk testMap testBetonski testJankali
+
+CORRDIR=autocorrector-prac3
+PRACOFICIAL=$(CORRDIR)/prac3-oficial.cc
+
+CXXTESTGEN=$(CORRDIR)/test/cxxtestgen.pl
+CXXTESTSUITECOORDINATE=$(CORRDIR)/test/p2TestSuiteCoordinate.h
+CXXTESTSUITEJUNK=$(CORRDIR)/test/p2TestSuiteJunkAC.h
+CXXTESTSUITEMAP=$(CORRDIR)/test/p2TestSuiteMapAC.h
+CXXTESTSUITEBETONSKI=$(CORRDIR)/test/p2TestSuiteBetonskiAC.h
+CXXTESTSUITEJANKALI=$(CORRDIR)/test/p2TestSuiteJankaliAC.h
+
+OPTS=-Wall -g -std=c++11
+OBJS=Jankali.o Betonski.o Map.o Junk.o Coordinate.o Util.o
+CC=g++
+
+prac3: $(OBJS) prac3.o
+	$(CC) $(OPTS) $(OBJS) prac3.o -o prac3
+
+prac3.o: $(PRACOFICIAL) Jankali.h Betonski.h Map.h Junk.h Coordinate.h Util.h
+	$(CC) $(OPTS) -I. -c $(PRACOFICIAL) -o prac3.o
+
+Map.o: Map.cc Map.h Junk.h Coordinate.h Util.h
+	$(CC) $(OPTS) -c Map.cc
+
+Jankali.o: Jankali.cc Jankali.h Betonski.h Map.h Junk.h Coordinate.h Util.h
+	$(CC) $(OPTS) -c Jankali.cc
+
+Betonski.o: Betonski.cc Betonski.h Map.h Junk.h Coordinate.h Util.h
+	$(CC) $(OPTS) -c Betonski.cc
+
+Junk.o: Junk.cc Junk.h Util.h
+	$(CC) $(OPTS) -c Junk.cc
+
+Util.o: Util.cc Util.h
+	$(CC) $(OPTS) -c Util.cc
+
+Coordinate.o: Coordinate.cc Coordinate.h
+	$(CC) $(OPTS) -c Coordinate.cc
+
+testCoordinate:
+	@echo
+	@echo "Compilando pruebas unitarias de Coordinate"
+	@rm -f $(CORRDIR)/p2TestRunnerCoordinate
+	@env PERL_BADLANG=0 $(CXXTESTGEN) --error-printer -o $(CORRDIR)/p2TestRunnerCoordinate.cc $(CXXTESTSUITECOORDINATE)
+	g++ -std=c++11 -g -I. -I$(CORRDIR)/test -o p2TestRunnerCoordinate $(CORRDIR)/p2TestRunnerCoordinate.cc $(OBJS)
+	@rm -f $(CORRDIR)/p2TestRunnerCoordinate.cc
+	@mv p2TestRunnerCoordinate $(CORRDIR)
+
+testJunk:
+	@echo
+	@echo "Compilando pruebas unitarias de Junk"
+	@rm -f $(CORRDIR)/p2TestRunnerJunk
+	@env PERL_BADLANG=0 $(CXXTESTGEN) --error-printer -o $(CORRDIR)/p2TestRunnerJunk.cc $(CXXTESTSUITEJUNK)
+	g++ -std=c++11 -g -I. -I$(CORRDIR)/test -o p2TestRunnerJunk $(CORRDIR)/p2TestRunnerJunk.cc $(OBJS)
+	@rm -f $(CORRDIR)/p2TestRunnerJunk.cc
+	@mv p2TestRunnerJunk $(CORRDIR)
+
+testMap:
+	@echo
+	@echo "Compilando pruebas unitarias de Map"
+	@rm -f $(CORRDIR)/p2TestRunnerMap
+	@env PERL_BADLANG=0 $(CXXTESTGEN) --error-printer -o $(CORRDIR)/p2TestRunnerMap.cc $(CXXTESTSUITEMAP)
+	g++ -std=c++11 -g -I. -I$(CORRDIR)/test -o p2TestRunnerMap $(CORRDIR)/p2TestRunnerMap.cc $(OBJS)
+	@rm -f $(CORRDIR)/p2TestRunnerMap.cc
+	@mv p2TestRunnerMap $(CORRDIR)
+
+testBetonski:
+	@echo
+	@echo "Compilando pruebas unitarias de Betonski"
+	@rm -f $(CORRDIR)/p2TestRunnerBetonski
+	@env PERL_BADLANG=0 $(CXXTESTGEN) --error-printer -o $(CORRDIR)/p2TestRunnerBetonski.cc $(CXXTESTSUITEBETONSKI)
+	g++ -std=c++11 -g -I. -I$(CORRDIR)/test -o p2TestRunnerBetonski $(CORRDIR)/p2TestRunnerBetonski.cc $(OBJS)
+	@rm -f $(CORRDIR)/p2TestRunnerBetonski.cc
+	@mv p2TestRunnerBetonski $(CORRDIR)
+
+
+testJankali:
+	@echo
+	@echo "Compilando pruebas unitarias de Jankali"
+	@rm -f $(CORRDIR)/p2TestRunnerJankali
+	@env PERL_BADLANG=0 $(CXXTESTGEN) --error-printer -o $(CORRDIR)/p2TestRunnerJankali.cc $(CXXTESTSUITEJANKALI)
+	g++ -std=c++11 -g -I. -I$(CORRDIR)/test -o p2TestRunnerJankali $(CORRDIR)/p2TestRunnerJankali.cc $(OBJS)
+	@rm -f $(CORRDIR)/p2TestRunnerJankali.cc
+	@mv p2TestRunnerJankali $(CORRDIR)
+
+
+clean:
+	rm -f $(OBJS)
+	rm -f prac3.o
+	rm -f prac3
+	rm -f p2TestRunner*
+	rm -rf salida-obtenida/*
+	rm -f mata
+	rm -f comparefiles

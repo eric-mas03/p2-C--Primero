@@ -1,0 +1,412 @@
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Instruction: newBetonski Sluk
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [-1,-1]
+
+Instruction: newBetonski Tisk
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [-1,-1]
+
+Betonski "Tisk" Free 0 [-1,-1]
+
+Instruction: newBetonski Foo
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [-1,-1]
+
+Betonski "Tisk" Free 0 [-1,-1]
+
+Betonski "Foo" Free 0 [-1,-1]
+
+Instruction: newJankali Darkwave
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [-1,-1]
+
+Betonski "Tisk" Free 0 [-1,-1]
+
+Betonski "Foo" Free 0 [-1,-1]
+
+Jankali "Darkwave" 300
+Traps 
+Instruction: newJankali TrollMaximus
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [-1,-1]
+
+Betonski "Tisk" Free 0 [-1,-1]
+
+Betonski "Foo" Free 0 [-1,-1]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: posBetonski Sluk 2 3
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [-1,-1]
+
+Betonski "Foo" Free 0 [-1,-1]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: posBetonski Tisk 6 7
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [-1,-1]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: posBetonski Foo 5 5
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04                               
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk GOLD 12 4 4
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G                 
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk STONE 10 4 5
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S              
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk FOOD 20 4 6
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05                               
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk FOOD 30 5 4
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F                 
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk FOOD 40 5 6
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F     F           
+06                               
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk METAL 10 6 4
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F     F           
+06             M                 
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk METAL 15 6 5
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F     F           
+06             M  M              
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: putJunk METAL 12 6 6
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F     F           
+06             M  M  M           
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 300
+Traps 
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: setTrap Darkwave 4 4
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F     F           
+06             M  M  M           
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 264
+Traps [4,4]
+Jankali "TrollMaximus" 300
+Traps 
+Instruction: setTrap TrollMaximus 6 6
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S  F           
+05             F     F           
+06             M  M  M           
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [2,3]
+
+Betonski "Tisk" Free 0 [6,7]
+
+Betonski "Foo" Free 0 [5,5]
+
+Jankali "Darkwave" 264
+Traps [4,4]
+Jankali "TrollMaximus" 236
+Traps [6,6]
+Instruction: play
+   00 01 02 03 04 05 06 07 08 09 
+00                               
+01                               
+02                               
+03                               
+04             G  S              
+05             F     F           
+06             M  M              
+07                               
+08                               
+09                               
+Betonski "Sluk" Free 0 [1,2]
+
+Betonski "Tisk" Captured 1200 [6,6]
+
+Betonski "Foo" Free 0 [4,6]
+[FOOD:20]
+Jankali "Darkwave" 264
+Traps [4,4]
+Jankali "TrollMaximus" 1436
+Betonski "Tisk" Captured 1200 [6,6]
+
+Traps [6,6]
+Instruction: exit
