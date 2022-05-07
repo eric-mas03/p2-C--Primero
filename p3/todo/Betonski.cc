@@ -1,13 +1,9 @@
 #include "Betonski.h"
 
-
-//d
-
 Betonski::Betonski(string name){
 	if(name.empty()){
 		throw EXCEPTION_NAME;
 	}
-	
 	this->name = name;
 	captured = false;
 	anger = 0;
@@ -59,19 +55,18 @@ int Betonski::calculateValue(JunkType type) const{
 
 	
 int Betonski::spoliation(){
-
-		if(!captured){
-			throw BETONSKI_NOT_CAPTURED;
-		}
-		if(anger+calculateValue()>5000){
-			this->captured = false;
-			this->anger = 0;
-			throw EXCEPTION_REBELION;
-		}
-		int masanger = calculateValue();
-		this->anger += masanger;
-		bag.clear();
-		return masanger;
+	if(!captured){
+		throw BETONSKI_NOT_CAPTURED;
+	}
+	if(anger+calculateValue()>5000){
+		this->captured = false;
+		this->anger = 0;
+		throw EXCEPTION_REBELION;
+	}
+	int masanger = calculateValue();
+	this->anger += masanger;
+	bag.clear();
+	return masanger;
 }
 
 	
