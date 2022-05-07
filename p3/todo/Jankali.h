@@ -23,7 +23,6 @@ class Jankali{
 		void spoil();
 		void spoil(JunkType type);
 		void spoil(int pos);
-
 };
 
 #endif
