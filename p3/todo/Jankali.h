@@ -11,8 +11,8 @@ class Jankali{
 	protected:
 		string name;
 		int power;
-		Coordinate traps;
-		vector<Betonski> subdued; 
+		vector<Coordinate> traps;
+		vector<Betonski *> subdued; 
 
 	public:
 		Jankali(string name);
