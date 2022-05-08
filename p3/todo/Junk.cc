@@ -7,11 +7,11 @@ Junk::Junk(){
 }
 
 Junk::Junk(JunkType type, int quantity){
-	this-> type = type;
 	if(quantity < 0){
 		throw EXCEPTION_QUANTITY;
 	}
 	else{
+		this-> type = type;
 		this->quantity = quantity;
 	}
 }
@@ -42,9 +42,10 @@ char Junk::getTypeChar() const{
 		case STONE:
 			capital = 'S';
 			break;
+		default:
+			break;
 	}	
 	return capital;
-	
 	char capitals[] = "WGMFS";
 	return capitals[type];
 }
@@ -68,6 +69,8 @@ int Junk::getValue() const{
 		case STONE:
 			valor = 20;
 			break;
+		default:
+			break;
 	}
 	valor = valor*quantity;	
 	return valor;
@@ -76,29 +79,9 @@ int Junk::getValue() const{
 }
 
 ostream &operator<<(ostream &os, const Junk &junk){
-	os << "[";
-	switch (junk.type){
-		case WASTELAND:
-			os<< "WASTELAND";
-			break;
-		case GOLD:
-			os<< "GOLD";
-			break;
-		case METAL:
-			os<<"METAL";
-			break;
-		case FOOD:
-			os<< "FOOD";
-			break;
-		case STONE:
-			os<< "STONE";
-			break;
-	}
-	
-	os << junk.quantity << "]";
-	return os;
+
 	string nombre[] = {"WASTELAND","GOLD","METAL","FOOD","STONE"};
-	os << "[" << nombre[junk.type]<<":"<<junk.quantity<<"]";
+	os << "[" << nombre[junk.getType()]<< ':' <<junk.getQuantity()<<"]";
 	return os;
 
 }

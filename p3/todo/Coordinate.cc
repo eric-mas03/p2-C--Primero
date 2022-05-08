@@ -10,25 +10,23 @@ Coordinate::Coordinate(){
 	column = -1;
 }
 
-int Coordinate:: getRow() const{
-	
+int Coordinate::getRow() const{
 	return row;
 }
 	
-int Coordinate:: getColumn() const{
-	
+int Coordinate::getColumn() const{
 	return column;
 }
 	
-void Coordinate:: SetRow(int row){
+void Coordinate::setRow(int row){
 	this->row = row;
 }
 
-void Coordinate :: SetColumn(int column){
+void Coordinate::setColumn(int column){
 	this->column = column;
 }
 
-bool Coordinate :: compare(const Coordinate &coord) const{
+bool Coordinate::compare(const Coordinate &coord) const{
 	bool check = false;
 	if(this->row == coord.row && this->column == coord.column){
 		check = true;

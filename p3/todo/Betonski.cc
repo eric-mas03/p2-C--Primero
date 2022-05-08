@@ -116,32 +116,32 @@ bool Betonski::move(const Map &map){
 		int movement = Util::getRandomNumber(8);
 		switch(movement){
 				case (0):
-					position.SetRow(position.getRow()-1);
+					position.setRow(position.getRow()-1);
 					break;
 				case (1):
-					position.SetRow(position.getRow()-1);
-					position.SetColumn(position.getColumn()+1);
+					position.setRow(position.getRow()-1);
+					position.setColumn(position.getColumn()+1);
 					break;
 				case(2):
-					position.SetColumn(position.getColumn()+1);
+					position.setColumn(position.getColumn()+1);
 					break;
 				case(3):
-					position.SetColumn(position.getColumn()+1);
-					position.SetRow(position.getRow()+1);
+					position.setColumn(position.getColumn()+1);
+					position.setRow(position.getRow()+1);
 					break;
 				case(4):
-					position.SetRow(position.getRow()+1);
+					position.setRow(position.getRow()+1);
 					break;
 				case(5):
-					position.SetRow(position.getRow()+1);
-					position.SetColumn(position.getColumn()-1);
+					position.setRow(position.getRow()+1);
+					position.setColumn(position.getColumn()-1);
 					break;
 				case(6):
-					position.SetColumn(position.getColumn()-1);
+					position.setColumn(position.getColumn()-1);
 					break;
 				case(7):
-					position.SetRow(position.getRow()-1);
-					position.SetColumn(position.getColumn()-1);
+					position.setRow(position.getRow()-1);
+					position.setColumn(position.getColumn()-1);
 					break;
 				default:
 					break;
@@ -152,6 +152,7 @@ bool Betonski::move(const Map &map){
 
 ostream& operator<<(ostream &os,const Betonski &betonski){
 
+	string nombre[] = {"WASTELAND","GOLD","METAL","FOOD","STONE"};
 	os << "Betonski "<< '"' << betonski.name << '"';
 	if(betonski.captured){
 		os << " Captured ";
@@ -159,10 +160,12 @@ ostream& operator<<(ostream &os,const Betonski &betonski){
 	else{
 		os << " Free ";
 	}
-	os << betonski.anger<<" ["<<betonski.position.getRow()<< ','<< betonski.position.getRow()<< ']'<<'\n';
+	os << betonski.anger<<" ["<<betonski.position.getRow()<< ','<< betonski.position.getColumn()<< ']'<<'\n';
 	
 	for(int i = 0; i<int(betonski.bag.size()); i++){
-			os << "["<<betonski.bag[i].getType()<<betonski.bag[i].getQuantity()<<"]";
+		os << Junk(betonski.bag[i]);
 	}
+
 	return os;
 }
+	

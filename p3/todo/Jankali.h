@@ -3,7 +3,6 @@
 #include <vector>
 #include <iostream>
 #include "Betonski.h"
-
 using namespace std;
 
 class Jankali{
@@ -11,8 +10,8 @@ class Jankali{
 	protected:
 		string name;
 		int power;
-		vector<Coordinate> traps;
-		vector<Betonski *> subdued; 
+		vector<Coordinate>traps;
+		vector<Betonski *>subdued; 
 
 	public:
 		Jankali(string name);
@@ -23,6 +22,7 @@ class Jankali{
 		void spoil();
 		void spoil(JunkType type);
 		void spoil(int pos);
+
 };
 
 #endif

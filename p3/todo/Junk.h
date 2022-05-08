@@ -3,12 +3,7 @@
 #include <iostream>
 #include "Util.h"
 
-
 using namespace std;
-
-
-
-
 
 class Junk{
 	friend ostream& operator<<(ostream &o, const Junk &junk);
@@ -23,6 +18,5 @@ class Junk{
 		int getQuantity() const;
 		char getTypeChar() const;
 		int getValue() const;
-		bool compare(const Junk &coord) const;
 };
 #endif

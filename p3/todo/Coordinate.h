@@ -14,11 +14,10 @@ class Coordinate{
 	public:
 		Coordinate();
 		Coordinate(int row, int column);
-		~Coordinate();
 		int getRow() const;
 		int getColumn() const;
-		void SetRow(int row);
-		void SetColumn(int column);
+		void setRow(int row);
+		void setColumn(int column);
 		bool compare(const Coordinate &coord) const;
 };
 #endif
