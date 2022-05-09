@@ -7,15 +7,15 @@ Map::Map(int rows, int columns){
 	this->rows = rows;
 	this->columns = columns;
 		
-		Junk junco;
-		vector<Junk> fila;
+	Junk junco;
+	vector<Junk> fila;
 
-		for(int i = 1; i<=columns; i++){
-			fila.push_back(junco);
-		}
-		for(int i = 1; i<=rows; i++){
-			junks.push_back(fila);
-		}
+	for(int i = 1; i<=columns; i++){
+		fila.push_back(junco);
+	}
+	for(int i = 1; i<=rows; i++){
+		junks.push_back(fila);
+	}
 		
 }
 	
@@ -25,7 +25,6 @@ bool Map::isInside(const Coordinate &coord) const{
 	   (coord.getColumn() >=0 && coord.getColumn()<=this->columns)){
 		return true;
 	}
-
 	else{
 		return false;
 	}
@@ -56,13 +55,9 @@ Junk Map::getJunk(const Coordinate &coord) const{
 
 Junk Map::collectJunk(const Coordinate &coord){
 	if(isInside(coord)){
-		Junk contenido;
-		/*
-		junks[coord.getRow()][coord.getColumn()] = Junk();
-		return Junk();
-		*/
+		Junk contenido, vacio;
 		contenido = junks[coord.getRow()][coord.getColumn()];
-		junks[coord.getRow()][coord.getColumn()] = Junk();
+		junks[coord.getRow()][coord.getColumn()] = vacio;
 		return contenido;
 		
 	}
@@ -72,7 +67,6 @@ Junk Map::collectJunk(const Coordinate &coord){
 	
 }
 
-//Cambia los 0 por -1
 ostream &operator << (ostream &os, const Map &map){
 	Junk contenido;
 	
@@ -105,44 +99,3 @@ ostream &operator << (ostream &os, const Map &map){
 
 	return os;
 }
-
-	/*
-	for(int i = -1; i<map.rows; i++){
-		for(int j = -1; j<map.columns; j++){
-				
-				if( i == -1 && j == -1){
-					os << "   ";
-				}
-
-				else if (i == -1){
-					if(j<10 && j>=0){
-						os << "0"<< j <<" ";
-					}
-					else{
-						os << j << " ";
-					}	
-				}
-
-				else if (j == -1){
-					if(i<10 && i>=0){
-						os << "0"<< i <<" ";
-					}
-					os << i << " ";	
-				}
-
-				else if(contenido.getTypeChar() == 'W'){
-					
-					contenido = map.junks[i][j];
-					os << "   ";
-				}
-
-				else{
-					contenido = map.junks[i][j];
-					os << contenido.getTypeChar() << "  ";
-				}
-				
-			}
-			os<<"||||("<<i<<") fila completada||||"<<endl;
-		}
-		os<<"HASTAAQUI"<<endl;
-	*/

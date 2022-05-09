@@ -7,8 +7,7 @@ Betonski::Betonski(string name){
 	this->name = name;
 	captured = false;
 	anger = 0;
-	this->position = Coordinate();
-	
+
 }
 	
 string Betonski::getName() const{
@@ -28,11 +27,11 @@ Coordinate Betonski::getPosition() const{
 }
 	
 void Betonski::capture(){
-	captured = true;
+	this->captured = true;
 }
 	
 void Betonski::setPosition(const Coordinate &coord){
-	position = coord;
+	this->position = coord;
 }
 	
 int Betonski::calculateValue() const{
@@ -71,34 +70,37 @@ int Betonski::spoliation(){
 
 	
 int Betonski::spoliation(JunkType type) {
-		int masanger = anger;
+		int otra = 0;
 		if(!captured){
 			throw BETONSKI_NOT_CAPTURED;
 		}
 	
-		if(anger+calculateValue()>5000){
+		if(anger+calculateValue(type)>5000){
 			this->captured = false;
 			this->anger = 0;
 			throw EXCEPTION_REBELION;
 		}
 		
+		int masanger = calculateValue(type);
+		otra += masanger;
+		this->anger += masanger;
+		
 		for(int i = 0; i < int(bag.size()) ; i++){
 			if(bag[i].getType() == type){
-				int masanger = calculateValue(type);
-				this->anger += masanger;
 				bag.erase(bag.begin()+i);
+				i--;
 			}
 		}
-	return masanger;
+	return otra;
 }
 
 	
-int Betonski::extract(const Map &map){
+int Betonski::extract(Map &map){
 	char pick;
 	Junk temporal;
 	int atemporal = 0;
 		
-		temporal = map.getJunk(this->position); 
+		temporal = map.collectJunk(position);
 		pick = temporal.getTypeChar();
 			if(pick != 'W'){
 				bag.push_back(temporal);
@@ -109,52 +111,62 @@ int Betonski::extract(const Map &map){
 }
 	
 bool Betonski::move(const Map &map){
+	Coordinate prueba;
+	prueba.setColumn(-1);
+	prueba.setRow(-1);
+
 	if(position.getColumn() < 0 && position.getRow() < 0){
 		throw EXCEPTION_OUTSIDE;
 	}
+	
 	else{
+		prueba = position;
 		int movement = Util::getRandomNumber(8);
 		switch(movement){
-				case (0):
-					position.setRow(position.getRow()-1);
-					break;
-				case (1):
-					position.setRow(position.getRow()-1);
-					position.setColumn(position.getColumn()+1);
-					break;
-				case(2):
-					position.setColumn(position.getColumn()+1);
-					break;
-				case(3):
-					position.setColumn(position.getColumn()+1);
-					position.setRow(position.getRow()+1);
-					break;
-				case(4):
-					position.setRow(position.getRow()+1);
-					break;
-				case(5):
-					position.setRow(position.getRow()+1);
-					position.setColumn(position.getColumn()-1);
-					break;
-				case(6):
-					position.setColumn(position.getColumn()-1);
-					break;
-				case(7):
-					position.setRow(position.getRow()-1);
-					position.setColumn(position.getColumn()-1);
-					break;
-				default:
-					break;
+			case (0):
+				prueba.setRow(prueba.getRow()-1);
+				break;
+			case (1):
+				prueba.setRow(prueba.getRow()-1);
+				prueba.setColumn(prueba.getColumn()+1);
+				break;
+			case(2):
+				prueba.setColumn(prueba.getColumn()+1);
+				break;
+			case(3):
+				prueba.setColumn(prueba.getColumn()+1);
+				prueba.setRow(prueba.getRow()+1);
+				break;
+			case(4):
+				prueba.setRow(prueba.getRow()+1);
+				break;
+			case(5):
+				prueba.setRow(prueba.getRow()+1);
+				prueba.setColumn(prueba.getColumn()-1);
+				break;
+			case(6):
+				prueba.setColumn(prueba.getColumn()-1);
+				break;
+			case(7):
+				prueba.setRow(prueba.getRow()-1);
+				prueba.setColumn(prueba.getColumn()-1);
+				break;
 		}
 	}
-	return 0;
+
+	if(map.isInside(prueba) == true){
+		position = prueba;
+		return true; 
+	}
+
+	else{
+		return false;
+	}
 }
 
 ostream& operator<<(ostream &os,const Betonski &betonski){
-
-	string nombre[] = {"WASTELAND","GOLD","METAL","FOOD","STONE"};
 	os << "Betonski "<< '"' << betonski.name << '"';
-	if(betonski.captured){
+	if(betonski.isCaptured() == true){
 		os << " Captured ";
 	}
 	else{

@@ -52,7 +52,7 @@ char Junk::getTypeChar() const{
 
 
 int Junk::getValue() const{
-	int valor;
+	int valor = 0;
 	switch (type){
 		case WASTELAND:
 			valor  = 0;
@@ -69,13 +69,9 @@ int Junk::getValue() const{
 		case STONE:
 			valor = 20;
 			break;
-		default:
-			break;
 	}
 	valor = valor*quantity;	
 	return valor;
-	int values[] = {0,500,100,50,20};
-	return values[type]*quantity;
 }
 
 ostream &operator<<(ostream &os, const Junk &junk){

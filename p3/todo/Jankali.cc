@@ -35,8 +35,9 @@ bool Jankali::setTrap(const Coordinate &coord){
 			coord.getColumn() != traps[i].getColumn() &&
 			this->power > (coord.getRow()+2)*(coord.getColumn()+2)){
 			
-			traps.push_back(this->traps[i]);
-			return true;
+				this->power = this->power-(coord.getRow()+2)*(coord.getColumn()+2);
+				traps.push_back(this->traps[i]);
+				return true;
 		}
 	}
 	return false;
@@ -47,8 +48,9 @@ void Jankali::spoil(){
 		try{
 			this->power += subdued[i]->spoliation();
 		}
-		catch (Exception EXCEPTION_REBELION){
+		catch (Exception e){
 			*subdued.erase(subdued.begin()+i);
+			i--;
 		}
 	}
 }
@@ -59,8 +61,9 @@ void Jankali::spoil(JunkType type){
 			try{
 				power += subdued[i]->spoliation(type);
 			}
-			catch(Exception EXCEPTION_REBELION ){
+			catch(Exception e){
 				*subdued.erase(subdued.begin()+i);
+				i--;
 			}
 	}
 }
@@ -72,8 +75,9 @@ void Jankali::spoil(int pos){
 				this->power += subdued[pos]->spoliation();
 			}
 		}
-		catch(Exception EXCEPTION_REBELION){
+		catch(Exception e){
 			*subdued.erase(subdued.begin()+i);
+			i--;
 		}
 	}
 }
@@ -81,20 +85,12 @@ void Jankali::spoil(int pos){
 
 ostream& operator<<(ostream &os,const Jankali &jankali){
 	os << "Jankali " << '"' << jankali.name << '"' << ' ' << jankali.power<<endl;
-	for(int i = 0; i<int(jankali.subdued.size()); i++){
-		
-		os << "Betonski " << '"' << jankali.subdued[i]->getName() 
-		   << '"' << ' ' << jankali.subdued[i]->isCaptured() << ' '
-		   << jankali.subdued[i]->getAnger() << ' ' << '[' 
-		   << jankali.subdued[i]->getPosition().getRow() << ',' 
-		   << jankali.subdued[i]->getPosition().getColumn() << ']'<<endl;
-
-
-		for(int j = 0; j<int(jankali.subdued.size()); i++){
-			os << Betonski(*jankali.subdued[i]); 
+	
+		for(int j = 0; j<int(jankali.subdued.size()); j++){
+			os << (*jankali.subdued[j]); 
 		}
 
-	}
+
 
 	os << "Traps "; 
 

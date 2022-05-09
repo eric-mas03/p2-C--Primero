@@ -30,7 +30,7 @@ class Betonski{
 		int calculateValue(JunkType type) const;
 		int spoliation();
 		int spoliation(JunkType type);
-		int extract(const Map &map);
+		int extract(Map &map);
 		bool move(const Map &map);
 };
 	
