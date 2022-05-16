@@ -29,19 +29,49 @@ void Jankali::hunt(vector<Betonski *> betonskis){
 	}
 }
 
-bool Jankali::setTrap(const Coordinate &coord){
-	for(int i = 0; i<coord.getRow();i++){
-		if(coord.getRow() != traps[i].getRow() &&
-			coord.getColumn() != traps[i].getColumn() &&
-			this->power > (coord.getRow()+2)*(coord.getColumn()+2)){
-			
-				this->power = this->power-(coord.getRow()+2)*(coord.getColumn()+2);
-				traps.push_back(this->traps[i]);
+//ARREGLAR LA FORMA DE RECORRER EL TRAP YA QUE LA J PUEDE SER DISITNTA DE I Y POR ESO DA ERROR
+bool Jankali::setTrap(const Coordinate &coord){	
+	bool existe = false;
+	
+	for (int i = 0; i<int(traps.size());i++){
+		
+		bool esta = coord.compare(this->traps[i]);
+		if(esta == true)
+			existe = true;
+	}
+
+	if(this->power > int((coord.getRow()+2)*(coord.getColumn()+2)) && existe == false){
+				
+				this->power = this->power - int((coord.getRow()+2)*(coord.getColumn()+2));
+				this->traps.push_back(coord);
+
 				return true;
-		}
 	}
 	return false;
-}
+	}
+
+/*
+	
+	for(int i = 0; i < int(coord.getRow());i++){
+		if(int(coord.getRow()) != int(this->traps[i].getRow())){
+			
+			for(int j = 0; j<int(coord.getColumn());j++){
+			
+				if(int(coord.getColumn()) != int(this->traps[j].getColumn()) &&
+				   int(coord.getRow()) != int(this->traps[j].getRow()) &&
+				   this->power >= (coord.getRow()+2)*(coord.getColumn()+2)){
+					
+					this->power = this->power - int((coord.getRow()+2)*(coord.getColumn()+2));
+					traps.push_back(this->traps[j]);
+					return true;
+				   }
+				}
+			}
+		}
+	return false;
+	}
+	*/
+
 
 void Jankali::spoil(){
 	for(int i = 0; i<int(subdued.size());i++){
@@ -84,7 +114,7 @@ void Jankali::spoil(int pos){
 
 
 ostream& operator<<(ostream &os,const Jankali &jankali){
-	os << "Jankali " << '"' << jankali.name << '"' << ' ' << jankali.power<<endl;
+	os << "Jankali " << '"' << jankali.getName() << '"' << ' ' << jankali.getPower()<<endl;
 	
 		for(int j = 0; j<int(jankali.subdued.size()); j++){
 			os << (*jankali.subdued[j]); 
@@ -92,12 +122,11 @@ ostream& operator<<(ostream &os,const Jankali &jankali){
 
 
 
-	os << "Traps "; 
+	os << "Traps "<<endl; 
 
-
-	for(int z = 0; z<int(jankali.traps.size());z++){
-		os << "[" << jankali.traps[z].getRow() << ","
-		   << jankali.traps[z].getColumn() << "]";
+	for(int i = 0; i<int(jankali.traps.size());i++){
+		os << "[" << jankali.traps[i].getRow() << ","
+		   << jankali.traps[i].getColumn() << "]";
 	} 
 	
 	return os;

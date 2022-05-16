@@ -79,6 +79,7 @@ ostream &operator << (ostream &os, const Map &map){
 		}
 		os<<j<<" ";
 	}
+	os<<endl;
 
 	for(i = 0; i<int(map.rows);i++){
 		
@@ -92,9 +93,10 @@ ostream &operator << (ostream &os, const Map &map){
 				os << "   ";
 			}
 			else{
-				os << map.junks[i][j].getTypeChar();
+				os << map.junks[i][j].getTypeChar() << "  ";
 			}
 		}
+		os << endl;
 	}
 
 	return os;

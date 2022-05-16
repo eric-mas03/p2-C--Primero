@@ -115,7 +115,7 @@ bool Betonski::move(const Map &map){
 	prueba.setColumn(-1);
 	prueba.setRow(-1);
 
-	if(position.getColumn() < 0 && position.getRow() < 0){
+	if(position.getColumn() < 0 || position.getRow() < 0){
 		throw EXCEPTION_OUTSIDE;
 	}
 	
@@ -172,10 +172,10 @@ ostream& operator<<(ostream &os,const Betonski &betonski){
 	else{
 		os << " Free ";
 	}
-	os << betonski.anger<<" ["<<betonski.position.getRow()<< ','<< betonski.position.getColumn()<< ']'<<'\n';
+	os << betonski.anger<<" ["<<betonski.position.getRow()<< ','<< betonski.position.getColumn()<< ']'<<endl;
 	
 	for(int i = 0; i<int(betonski.bag.size()); i++){
-		os << Junk(betonski.bag[i]);
+		os << Junk(betonski.bag[i])<<endl;
 	}
 
 	return os;
